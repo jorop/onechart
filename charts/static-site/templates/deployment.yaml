@@ -42,6 +42,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: init-con
+        restartPolicy: Always
         image: {{ .Values.buildImage }}
         {{- if .Values.gitCloneUrlSecretName }}
         envFrom:
