@@ -77,8 +77,8 @@ spec:
             command:
             - cat
             - /usr/share/nginx/html/index.html
-            periodSeconds: {{ .Values.initContainer.livenessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.initContainer.livenessProbe.failureThreshold }}
+          periodSeconds: {{ .Values.initContainer.livenessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.initContainer.livenessProbe.failureThreshold }}
         {{- end }}
         {{- if .Values.initContainer.startupProbe.enabled }}
         startupProbe:
@@ -86,8 +86,8 @@ spec:
             command:
             - cat
             - /usr/share/nginx/html/index.html
-            periodSeconds: {{ .Values.initContainer.startupProbe.periodSeconds }}
-            failureThreshold: {{ .Values.initContainer.startupProbe.failureThreshold }}
+          periodSeconds: {{ .Values.initContainer.startupProbe.periodSeconds }}
+          failureThreshold: {{ .Values.initContainer.startupProbe.failureThreshold }}
         {{- end }}
         {{- if .Values.initContainer.readinessProbe.enabled }}
         readinessProbe:
@@ -95,8 +95,8 @@ spec:
             command:
             - cat
             - /usr/share/nginx/html/index.html
-            periodSeconds: {{ .Values.initContainer.readinessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.initContainer.readinessProbe.failureThreshold }}
+          periodSeconds: {{ .Values.initContainer.readinessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.initContainer.readinessProbe.failureThreshold }}
       {{- end }}
       containers:
         - name: {{ template "robustName" .Release.Name }}
