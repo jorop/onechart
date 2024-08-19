@@ -45,7 +45,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: init-con
-        restartPolicy: Always
+        restartPolicy: {{ .Values.initContainer.restartPolicy }}
         image: {{ .Values.buildImage }}
         {{- if .Values.gitCloneUrlSecretName }}
         envFrom:
@@ -76,15 +76,15 @@ spec:
             command:
             - cat
             - /usr/share/nginx/html/index.html
-            periodSeconds: 5
-            failureTreshold: 1
+            periodSeconds: {{ .Values.initContainer.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.initContainer.livenessProbe.failureThreshold }}
         startupProbe:
           exec:
             command:
             - cat
             - /usr/share/nginx/html/index.html
-            periodSeconds: 10
-            failureTreshold: 30
+            periodSeconds: {{ .Values.initContainer.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.initContainer.startupProbe.failureThreshold }}
       containers:
         - name: {{ template "robustName" .Release.Name }}
           securityContext:

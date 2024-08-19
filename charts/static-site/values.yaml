@@ -60,3 +60,13 @@ buildImage: "node:latest"
 buildScript: |
   npm install && npm run build
 builtAssets: build/
+
+initContainer:
+  restartPolicy: Always
+  livenessProbe:
+    periodSeconds: 1
+    failureThreshold: 10
+  startupProbe:
+    periodSeconds: 20
+    failureThreshold: 30
+  
