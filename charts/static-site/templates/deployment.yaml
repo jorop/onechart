@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "staticSite.labels" . | nindent 4 }}
-  {{- if or .Values.gitRepository .Values.gitSha }}
+  {{- if or .Values.gitRepository .Values.gitSha .Values.deploymentAnnotations }}
   annotations:
     {{- if .Values.gitRepository }}
     gimlet.io/git-repository: {{ .Values.gitRepository }}
@@ -14,7 +14,7 @@ metadata:
     gimlet.io/git-sha: {{ .Values.gitSha }}
     {{- end }}
     {{- with .Values.deploymentAnnotations }}
-      {{- toYaml . | nindent 8 }}
+      {{- toYaml . | nindent 4 }}
     {{- end }}
   {{- end }}
 spec:
