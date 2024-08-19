@@ -71,6 +71,20 @@ spec:
         volumeMounts:
         - name: static-files
           mountPath: /usr/share/nginx/html
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /usr/share/nginx/html/index.html
+            periodSeconds: 5
+            failureTreshold: 1
+        startupProbe:
+          exec:
+            command:
+            - cat
+            - /usr/share/nginx/html/index.html
+            periodSeconds: 10
+            failureTreshold: 30
       containers:
         - name: {{ template "robustName" .Release.Name }}
           securityContext:
