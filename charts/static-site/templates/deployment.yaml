@@ -71,6 +71,7 @@ spec:
         volumeMounts:
         - name: static-files
           mountPath: /usr/share/nginx/html
+        {{- if .Values.initContainer.livenessProbe.enabled }}
         livenessProbe:
           exec:
             command:
@@ -78,6 +79,8 @@ spec:
             - /usr/share/nginx/html/index.html
             periodSeconds: {{ .Values.initContainer.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.initContainer.livenessProbe.failureThreshold }}
+        {{- end }}
+        {{- if .Values.initContainer.startupProbe.enabled }}
         startupProbe:
           exec:
             command:
@@ -85,6 +88,16 @@ spec:
             - /usr/share/nginx/html/index.html
             periodSeconds: {{ .Values.initContainer.startupProbe.periodSeconds }}
             failureThreshold: {{ .Values.initContainer.startupProbe.failureThreshold }}
+        {{- end }}
+        {{- if .Values.initContainer.readinessProbe.enabled }}
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /usr/share/nginx/html/index.html
+            periodSeconds: {{ .Values.initContainer.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.initContainer.readinessProbe.failureThreshold }}
+      {{- end }}
       containers:
         - name: {{ template "robustName" .Release.Name }}
           securityContext:

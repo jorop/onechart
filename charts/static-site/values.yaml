@@ -64,9 +64,15 @@ builtAssets: build/
 initContainer:
   restartPolicy: Always
   livenessProbe:
+    enabled: false
     periodSeconds: 1
     failureThreshold: 10
   startupProbe:
+    enabled: true
+    periodSeconds: 20
+    failureThreshold: 30
+  readinessProbe:
+    enabled: true
     periodSeconds: 20
     failureThreshold: 30
   
