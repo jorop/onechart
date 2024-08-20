@@ -67,7 +67,7 @@ spec:
           cd {{ regexFind "([^\\/]+$)" .Values.gitCloneUrl | replace ".git" "" }} &&
           {{- end }}
           {{- if gt (int .Values.updateInterval) 0 }}
-          while true; do sleep {{- .Values.updateInterval }};
+          while true; do sleep {{ .Values.updateInterval }};
           {{- end}}
           {{ .Values.buildScript | nindent 10}};
           {{- if gt (int .Values.updateInterval) 0 }}

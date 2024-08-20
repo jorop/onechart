@@ -55,7 +55,7 @@ tolerations: []
 affinity: {}
 
 # values to build and deploy static sites
-updateInterval: 0 # pull and update every x seconds, set to 0 to disable - it will then only pulled+built at start of the pod
+updateInterval: 10 # pull and update every x seconds, set to 0 to disable - it will then only pulled+built at start of the pod
 gitCloneUrl: https://github.com/gimlet-io/reactjs-test-app.git
 buildImage: "node:latest"
 buildScript: |
