@@ -5,17 +5,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "staticSite.labels" . | nindent 4 }}
-  {{- if or .Values.gitRepository .Values.gitSha .Values.deploymentAnnotations }}
+  {{- with .Values.deploymentAnnotations }}
   annotations:
-    {{- if .Values.gitRepository }}
-    gimlet.io/git-repository: {{ .Values.gitRepository }}
-    {{- end }}
-    {{- if .Values.gitSha }}
-    gimlet.io/git-sha: {{ .Values.gitSha }}
-    {{- end }}
-    {{- with .Values.deploymentAnnotations }}
-      {{- toYaml . | nindent 4 }}
-    {{- end }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
@@ -68,7 +60,7 @@ spec:
           {{- end }}
           {{- if gt (int .Values.updateInterval) 0 }}
           while true; do sleep {{ .Values.updateInterval }};
-          git pull && \
+          if [[ $(git pull) = 'Already up to date.' ]]; then break; fi && \
           echo $(date && git symbolic-ref --short HEAD && git rev-parse HEAD) && \
           {{ .Values.buildScript | nindent 10}}
           mkdir -p /usr/share/nginx/html && \
