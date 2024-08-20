@@ -68,13 +68,19 @@ spec:
           {{- end }}
           {{- if gt (int .Values.updateInterval) 0 }}
           while true; do sleep {{ .Values.updateInterval }};
+          git pull && \
+          echo $(date && git symbolic-ref --short HEAD && git rev-parse HEAD) && \
+          {{ .Values.buildScript | nindent 10}}
+          mkdir -p /usr/share/nginx/html && \
+          cp -r ./dist/. /usr/share/nginx/html
           {{- end}}
-          {{ .Values.buildScript | nindent 10}};
           {{- if gt (int .Values.updateInterval) 0 }}
           done;
           {{- end }}
+          {{- if eq (int .Values.updateInterval) 0 }}
           mkdir -p /usr/share/nginx/html &&
           cp -r ./{{ .Values.builtAssets }}. /usr/share/nginx/html
+          {{- end }}
         {{- end }}
         volumeMounts:
         - name: static-files
