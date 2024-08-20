@@ -55,14 +55,15 @@ tolerations: []
 affinity: {}
 
 # values to build and deploy static sites
+updateInterval: 0 # pull and update every x seconds, set to 0 to disable - it will then only pulled+built at start of the pod
 gitCloneUrl: https://github.com/gimlet-io/reactjs-test-app.git
 buildImage: "node:latest"
 buildScript: |
   npm install && npm run build
 builtAssets: build/
 
+# the values of initContainer onl apply if updateInterval > 0
 initContainer:
-  restartPolicy: Always
   livenessProbe:
     enabled: false
     periodSeconds: 1
@@ -74,5 +75,5 @@ initContainer:
   readinessProbe:
     enabled: true
     periodSeconds: 20
-    failureThreshold: 30
+    initialDelaySeconds: 5
   
