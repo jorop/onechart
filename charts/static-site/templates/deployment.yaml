@@ -64,12 +64,13 @@ spec:
           echo $(date && git symbolic-ref --short HEAD && git rev-parse HEAD) && \
           {{ .Values.buildScript | nindent 10}}
           mkdir -p /usr/share/nginx/html && \
-          cp -r ./dist/. /usr/share/nginx/html
+          cp -r ./{{ .Values.builtAssets }}. /usr/share/nginx/html
           {{- end}}
           {{- if gt (int .Values.updateInterval) 0 }}
           done;
           {{- end }}
           {{- if eq (int .Values.updateInterval) 0 }}
+          {{ .Values.buildScript | nindent 10}}
           mkdir -p /usr/share/nginx/html &&
           cp -r ./{{ .Values.builtAssets }}. /usr/share/nginx/html
           {{- end }}
