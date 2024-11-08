@@ -37,7 +37,6 @@ spec:
         emptyDir: {}
       initContainers:
       - name: init-con
-        {{- if gt (int .Values.updateInterval) 0 }}
         restartPolicy: Always
         {{- end }}
         image: {{ .Values.buildImage }}
